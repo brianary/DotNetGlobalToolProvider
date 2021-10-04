@@ -9,10 +9,11 @@ function Get-InstalledPackage
         [string] $MinimumVersion,
         [string] $MaximumVersion
     )
-	Write-Verbose "DotNetGlobalToolProvider: Listing installed packages"
+	Write-Verbose "DotNetGlobalToolProvider: Listing installed packages like $Name"
 	foreach($line in dotnet tool list -g |select -Skip 2)
 	{
 		$package,$version,$commands = $line -split '\s\s+',3
+		if($package -notlike $Name) {continue}
 		@{
 			FastPackageReference = @{Name = $package; Version = $version} |ConvertTo-Json -Compress
 			Name = $package
@@ -30,8 +31,8 @@ function Find-Package {
 		[string] $MinimumVersion,
 		[string] $MaximumVersion
 	)
-	Write-Verbose "DotNetGlobalToolProvider: Searching for '$name'"
-	foreach($line in dotnet tool search $name |select -Skip 2)
+	Write-Verbose "DotNetGlobalToolProvider: Searching for '$Name'"
+	foreach($line in dotnet tool search $Name |select -Skip 2)
 	{
 		$package,$version,$authors,$downloads,$verified = $line -split '\s\s+',5
 		$verified = $verified -eq 'x'
