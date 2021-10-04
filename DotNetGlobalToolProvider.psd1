@@ -2,7 +2,7 @@
 # and https://docs.microsoft.com/powershell/module/microsoft.powershell.core/new-modulemanifest
 @{
 RootModule = 'DotNetGlobalToolProvider.psm1'
-ModuleVersion = '0.0.2'
+ModuleVersion = '0.0.3'
 CompatiblePSEditions = @('Core')
 GUID = '9b4f5ca2-41f0-4186-becb-c4fc2c8474c3'
 Author = 'Brian Lalonde'

@@ -14,9 +14,8 @@ function Get-InstalledPackage
 	{
 		$package,$version,$commands = $line -split '\s\s+',3
 		@{
-			FastPackageReference = @{Name = $name; Version = $version} |ConvertTo-Json -Compress
-			PackageName = $package
-			Name = $name
+			FastPackageReference = @{Name = $package; Version = $version} |ConvertTo-Json -Compress
+			Name = $package
 			Version = $version
 			VersionScheme = 'MultiPartNumeric'
 			Summary = "Authors: $authors; Downloads: $downloads; Verified: $verified"
@@ -37,8 +36,8 @@ function Find-Package {
 		$package,$version,$authors,$downloads,$verified = $line -split '\s\s+',5
 		$verified = $verified -eq 'x'
 		@{
-			FastPackageReference = @{Name = $name; Version = $version} |ConvertTo-Json -Compress
-			Name = $name
+			FastPackageReference = @{Name = $package; Version = $version} |ConvertTo-Json -Compress
+			Name = $package
 			Version = $version
 			VersionScheme = 'MultiPartNumeric'
 			Summary = "Authors: $authors; Downloads: $downloads; Verified: $verified"
