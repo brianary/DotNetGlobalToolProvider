@@ -10,7 +10,10 @@ function Get-InstalledPackage
         [string] $MaximumVersion
     )
 	Write-Verbose "DotNetGlobalToolProvider: Listing installed packages like $Name"
-	foreach($line in dotnet tool list -g |select -Skip 2)
+	Write-Debug "Execute: dotnet tool list -g"
+	$list = dotnet tool list -g
+	Write-Debug ($list -join "`n")
+	foreach($line in $list |select -Skip 2)
 	{
 		$package,$version,$commands = $line -split '\s\s+',3
 		if($package -notlike $Name) {continue}
@@ -32,7 +35,10 @@ function Find-Package {
 		[string] $MaximumVersion
 	)
 	Write-Verbose "DotNetGlobalToolProvider: Searching for '$Name'"
-	foreach($line in dotnet tool search $Name |select -Skip 2)
+	Write-Debug "Execute: dotnet tool search $Name"
+	$find = dotnet tool search $Name
+	Write-Debug ($find -join "`n")
+	foreach($line in $find |select -Skip 2)
 	{
 		$package,$version,$authors,$downloads,$verified = $line -split '\s\s+',5
 		$verified = $verified -eq 'x'
