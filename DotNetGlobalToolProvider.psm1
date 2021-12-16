@@ -13,7 +13,7 @@ function Get-InstalledPackage
 	Write-Debug "Execute: dotnet tool list -g"
 	$list = dotnet tool list -g
 	Write-Debug ($list -join "`n")
-	foreach($line in $list |select -Skip 2)
+	foreach($line in $list |where {$_ -match '^\S+\s+\d+(?:\.\d+)+\b'})
 	{
 		$package,$version,$commands = $line -split '\s\s+',3
 		if($package -notlike $Name) {continue}
@@ -38,7 +38,7 @@ function Find-Package {
 	Write-Debug "Execute: dotnet tool search $Name"
 	$find = dotnet tool search $Name
 	Write-Debug ($find -join "`n")
-	foreach($line in $find |select -Skip 2)
+	foreach($line in $find |where {$_ -match '^\S+\s+\d+(?:\.\d+)+\b'})
 	{
 		$package,$version,$authors,$downloads,$verified = $line -split '\s\s+',5
 		$verified = $verified -eq 'x'
