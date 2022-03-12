@@ -13,7 +13,7 @@ jobs:
       id: is_module_update_test
       shell: pwsh
       run: |
-        Write-Host "::set-output name=is_module_update::$(@(git diff --name-only HEAD~ HEAD -- "$(Resolve-Path .\src\*\*.psd1)").Count -gt 0)"
+        Write-Host "::set-output name=is_module_update::$(@(git diff --name-only HEAD~ HEAD -- "$(Resolve-Path .\*.psd1)").Count -gt 0)"
     - name: Publish
       if: success() && env.gallerykey && steps.is_module_update_test.outputs.is_module_update == 'True'
       shell: pwsh

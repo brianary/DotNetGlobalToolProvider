@@ -20,7 +20,7 @@ PrivateData = @{
 		Tags = @('PackageManagement','Provider','OneGet','DotNetTool')
 		LicenseUri = 'https://github.com/brianary/DotNetGlobalToolProvider/blob/master/LICENSE'
 		ProjectUri = 'https://github.com/brianary/DotNetGlobalToolProvider/'
-		#IconUri = 'http://webcoder.info/images/CertAdmin.svg'
+		#IconUri = 'http://webcoder.info/images/DotNetGlobalToolProvider.svg'
 		# ReleaseNotes = ''
 	}
 }
