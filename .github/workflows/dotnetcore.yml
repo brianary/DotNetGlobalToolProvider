@@ -1,0 +1,29 @@
+name: Module
+on: push
+jobs:
+  update:
+    runs-on: windows-latest
+    env:
+      gallerykey: ${{ secrets.gallerykey }}
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        fetch-depth: 2
+    - name: Module update check
+      id: is_module_update_test
+      shell: pwsh
+      run: |
+        Write-Host "::set-output name=is_module_update::$(@(git diff --name-only HEAD~ HEAD -- "$(Resolve-Path .\src\*\*.psd1)").Count -gt 0)"
+    - name: Publish
+      if: success() && env.gallerykey && steps.is_module_update_test.outputs.is_module_update == 'True'
+      shell: pwsh
+      run: |
+        $Name = [io.path]::GetFileNameWithoutExtension((Resolve-Path *.psd1))
+        Import-LocalizedData Module -FileName $Name -BaseDirectory "$PWD"
+        Write-Host "Publishing module $Name $($Module.ModuleVersion)"
+        $Destination = "$env:USERPROFILE\Documents\PowerShell\Modules\$Name\$($Module.ModuleVersion)"
+        if(Test-Path $Destination -Type Container) {Split-Path $Destination |Remove-Item -Recurse -Force}
+        New-Item $Destination -Type Directory
+        Copy-Item "$Name.ps?1" $Destination
+        Import-Module $Name
+        Publish-Module -Name $Name -NuGetApiKey $env:gallerykey
